@@ -23,6 +23,22 @@ const getPhone = (getData) => {
     console.log(getData);
     const mainDiv = document.getElementById('allData');
     mainDiv.textContent = '';
+
+    const lodingBTN = document.getElementById('loadingBTN');
+    if(getData.length > 6 ){
+        lodingBTN.classList.remove('hidden');
+    }
+    else if(getData.length<=0){
+        alert('not get any data about it....');
+        lodingBTN.classList.add('hidden');
+
+    }
+    else{
+        lodingBTN.classList.add('hidden');
+    }
+
+    getData = getData.slice(0,6);
+
     getData.forEach(phone => {
         const div = document.createElement('div');
         div.classList = `w-full my-[20px] lg:ml-[3rem] max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700`;
@@ -65,13 +81,25 @@ const getPhone = (getData) => {
         mainDiv.appendChild(div);
 
     });
-}
+
+    spinnerStart(false);
+};
 
 const getValue = () => {
+    spinnerStart(true);
     const searchValue = document.getElementById('default-search').value;
     lodePhone2(searchValue);
-    console.log(searchValue);
-}
+};
+
+const spinnerStart = (Order)=>{
+    const spin = document.getElementById('spinner');
+    if(Order){
+        spin.classList.remove('hidden')
+    }
+    else{
+        spin.classList.add('hidden');
+    }
+};
 
 
 
