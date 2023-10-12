@@ -101,6 +101,8 @@ const spinnerStart = (Order)=>{
     }
 };
 
-
+const showALL = () => {
+    getValue(true);
+}
 
 lodePhone();
