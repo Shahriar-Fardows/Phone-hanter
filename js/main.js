@@ -51,7 +51,7 @@ const showInfo = (infos) => {
                       <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">Memory: ${infos.mainFeatures.memory} </h5>
                       </a><br>
                       <a href="#">
-                      <h6 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">Slug: {infos.slug} </h6>
+                      <h6 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">Slug: ${infos.slug} </h6>
                       </a>
                     </div>
                 <div class="modal-action">
