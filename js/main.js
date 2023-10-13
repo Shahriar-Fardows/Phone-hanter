@@ -1,31 +1,77 @@
-// api all data call on this function 
+// api all data call on this functions
 
-const lodePhone2 = async(searchText) => {
+const lodePhone2 = async(searchText, isShow) => {
     const res = await fetch(`https://openapi.programming-hero.com/api/phones?search=${searchText}`);
     const data = await res.json();
     const getData = data.data;
-    getPhone(getData);
-
-    
+    getPhone(getData, isShow);    
 }
 const lodePhone = async() => {
     const res = await fetch('https://openapi.programming-hero.com/api/phones?search=iphone');
     const data = await res.json();
     const getData = data.data;
     getPhone(getData);
-
+    
     
 }
 
+// modal data showing function 
+
+const showModal = async (id) =>{
+    
+    const res = await fetch(`https://openapi.programming-hero.com/api/phone/${id}`);
+    const data = await res.json();
+    const getInfo = data.data;
+   showInfo(getInfo)
+}
+
+const showInfo = (infos) => {
+    console.log(infos)
+    const modalDiv = document.getElementById('my_modal_1');
+    const div = document.createElement("div");
+    div.classList = `modal-box`;
+    div.innerHTML = `
+                <a href="#">
+                    <img class="p-8 ml-[1.5rem] ml lg:ml-[6vw] rounded-t-lg" src="${infos.image}" alt="product image" />
+                </a>
+                <div class="px-5 pb-5">
+                      <a href="#">
+                      <h2 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">Name: ${infos.name} </h2>
+                      </a><br>
+                      <a href="#">
+                      <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">brand: ${infos.brand} </h5>
+                      </a><br>
+                      <a href="#">
+                      <h6 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">Storage: ${infos.mainFeatures.storage} </h6>
+                      </a><br>
+                      <a href="#">
+                      <h6 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">Display Size: ${infos.mainFeatures.displaySize} </h6>
+                      </a><br>
+                      <a href="#">
+                      <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">Memory: ${infos.mainFeatures.memory} </h5>
+                      </a><br>
+                      <a href="#">
+                      <h6 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">Slug: {infos.slug} </h6>
+                      </a>
+                    </div>
+                <div class="modal-action">
+                <form method="dialog">
+                    <button class="btn">Close</button>
+                </form>
+                </div>
+    `;
+    modalDiv.appendChild(div);
+}
+
+
 // now this function make a card with api data and add it on web site 
 
-const getPhone = (getData) => {
-    console.log(getData);
+const getPhone = (getData, isShow) => {
     const mainDiv = document.getElementById('allData');
     mainDiv.textContent = '';
 
     const lodingBTN = document.getElementById('loadingBTN');
-    if(getData.length > 6 ){
+    if(getData.length > 6 && !isShow ){
         lodingBTN.classList.remove('hidden');
     }
     else if(getData.length<=0){
@@ -36,8 +82,10 @@ const getPhone = (getData) => {
     else{
         lodingBTN.classList.add('hidden');
     }
-
-    getData = getData.slice(0,6);
+     
+    if(!isShow){
+        getData = getData.slice(0,6);
+    }
 
     getData.forEach(phone => {
         const div = document.createElement('div');
@@ -73,11 +121,11 @@ const getPhone = (getData) => {
             </div>
             <div class="flex items-center justify-between">
              <span class="text-3xl font-bold text-gray-900 dark:text-white">$599</span>
-              <a href="#" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">buy Now</a>
+              <a href="#" onclick = 'showModal("${phone.slug}") ; my_modal_1.showModal() '  class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Show Details</a>
             </div>
         </div>
         `;
-
+        // onclick="my_modal_1.showModal()"
         mainDiv.appendChild(div);
 
     });
@@ -85,10 +133,13 @@ const getPhone = (getData) => {
     spinnerStart(false);
 };
 
-const getValue = () => {
+
+const getValue = (isShow) => {
+    
     spinnerStart(true);
     const searchValue = document.getElementById('default-search').value;
-    lodePhone2(searchValue);
+    lodePhone2(searchValue, isShow);
+
 };
 
 const spinnerStart = (Order)=>{
@@ -103,6 +154,10 @@ const spinnerStart = (Order)=>{
 
 const showALL = () => {
     getValue(true);
+    console.log('tik ase');
 }
+
+
+
 
 lodePhone();
